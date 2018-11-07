@@ -37,11 +37,11 @@ public class UnityChanController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	//Animatorコンポーネントを取得
+		//Animatorコンポーネントを取得
 		this.myAnimator = GetComponent<Animator>();
 
 		//走るアニメーションを開始
-//		this.myAnimator.SetFloat("Speed",0.2f);
+		//		this.myAnimator.SetFloat("Speed",0.2f);
 		this.myAnimator.SetFloat("Speed",1);
 
 		//Rigdbodyコンポーネントを取得
@@ -54,7 +54,7 @@ public class UnityChanController : MonoBehaviour {
 		this.scoreText = GameObject.Find("ScoreText");
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -66,34 +66,34 @@ public class UnityChanController : MonoBehaviour {
 			this.myAnimator.speed *= this.coefficient;
 		}
 
-			//Unityちゃんに前方向の力を加える
-			this.myRigidbody.AddForce (this.transform.forward * this.forwardForce);
+		//Unityちゃんに前方向の力を加える
+		this.myRigidbody.AddForce (this.transform.forward * this.forwardForce);
 
-			//unityちゃんに矢印キーまたはボタンに応じて左右に移動させる
+		//unityちゃんに矢印キーまたはボタンに応じて左右に移動させる
 		if ((Input.GetKey (KeyCode.LeftArrow) || this.isLButtonDown) && -this.moveBleRange < this.transform.position.x) {
-				//左に移動
-				this.myRigidbody.AddForce (-this.turnForce, 0, 0);
+			//左に移動
+			this.myRigidbody.AddForce (-this.turnForce, 0, 0);
 		} else if ((Input.GetKey (KeyCode.RightArrow) || this.isRButtonDown) && this.transform.position.x < this.moveBleRange) {
-				//右に移動
-				this.myRigidbody.AddForce (this.turnForce, 0, 0);
-			}
-
-			//Jumpステートの場合はJumoにfalseをセットする
-			if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Jump")) {
-				this.myAnimator.SetBool ("Jump", false);
-			}
-		
-			//ジャンプしていないときにスペースが押されたらジャンプする
-			if (Input.GetKeyDown (KeyCode.Space) && this.transform.position.y < 0.5f) {
-				//ジャンプアニメを再生
-				this.myAnimator.SetBool ("Jump", true);
-				//unityちゃんに上方向の力を加える
-				this.myRigidbody.AddForce (this.transform.up * this.upForce);
-			}
+			//右に移動
+			this.myRigidbody.AddForce (this.turnForce, 0, 0);
 		}
 
-		//トリガーモードで他のオブジェクトと接触した場合の処理
-		void OnTriggerEnter(Collider other) {
+		//Jumpステートの場合はJumoにfalseをセットする
+		if (this.myAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Jump")) {
+			this.myAnimator.SetBool ("Jump", false);
+		}
+
+		//ジャンプしていないときにスペースが押されたらジャンプする
+		if (Input.GetKeyDown (KeyCode.Space) && this.transform.position.y < 0.5f) {
+			//ジャンプアニメを再生
+			this.myAnimator.SetBool ("Jump", true);
+			//unityちゃんに上方向の力を加える
+			this.myRigidbody.AddForce (this.transform.up * this.upForce);
+		}
+	}
+
+	//トリガーモードで他のオブジェクトと接触した場合の処理
+	void OnTriggerEnter(Collider other) {
 		//障害物に衝突した場合
 		if (other.gameObject.tag == "CarTag" || other.gameObject.tag == "TrafficConeTag") {
 			this.isEnd = true;
@@ -101,9 +101,9 @@ public class UnityChanController : MonoBehaviour {
 			this.stateText.GetComponent<Text> ().text = "GAME OVER";
 		}
 
-			//ゴール地点い到達した場合
-			if ( other.gameObject.tag == "GoalTag") {
-				this.isEnd = true;
+		//ゴール地点い到達した場合
+		if ( other.gameObject.tag == "GoalTag") {
+			this.isEnd = true;
 			//ScoreTextにGAME CLEARを表示
 			this.stateText.GetComponent<Text>().text = "CLEAR!!";
 		}
@@ -122,33 +122,34 @@ public class UnityChanController : MonoBehaviour {
 
 			//接触したコインのオブジェクトを破棄
 			Destroy (other.gameObject);
+
 		}
 	}
 
 
-//ジャンプボタンを押した場合の処理（追加）
-public void GetMyJumpButtonDown(){
-	if (this.transform.position.y < 0.5f) {
-		this.myAnimator.SetBool("Jump", true);
-		this.myRigidbody.AddForce(this.transform.up * this.upForce);
+	//ジャンプボタンを押した場合の処理（追加）
+	public void GetMyJumpButtonDown(){
+		if (this.transform.position.y < 0.5f) {
+			this.myAnimator.SetBool("Jump", true);
+			this.myRigidbody.AddForce(this.transform.up * this.upForce);
+		}
 	}
-}
 
-//左ボタンを押し続けた場合の処理（追加）
-public void GetMyLeftButtonDown(){
-	this.isLButtonDown = true;
-}
-//左ボタンを離した場合の処理（追加）
-public void GetMyLeftButtonUo(){
-	this.isLButtonDown = false;
-}
+	//左ボタンを押し続けた場合の処理（追加）
+	public void GetMyLeftButtonDown(){
+		this.isLButtonDown = true;
+	}
+	//左ボタンを離した場合の処理（追加）
+	public void GetMyLeftButtonUo(){
+		this.isLButtonDown = false;
+	}
 
-//右ボタンを押し続けた場合の処理（追加）
-public void GetMyRightButtonDown(){
-	this.isRButtonDown = true;
-}
-//右ボタンを離した場合の処理（追加）
-public void GetMyRightButtonUp(){
-	this.isRButtonDown = false;
+	//右ボタンを押し続けた場合の処理（追加）
+	public void GetMyRightButtonDown(){
+		this.isRButtonDown = true;
+	}
+	//右ボタンを離した場合の処理（追加）
+	public void GetMyRightButtonUp(){
+		this.isRButtonDown = false;
 	}
 }

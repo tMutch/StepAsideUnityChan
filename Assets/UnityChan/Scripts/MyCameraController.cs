@@ -8,6 +8,10 @@ public class MyCameraController : MonoBehaviour {
 	//Unityちゃんとカメラの距離
 	private float difference;
 
+	//Unityちゃんとカメラの距離からさらに先を確保
+	private float differenceAdd;
+
+
 	// Use this for initialization
 	void Start () {
 		//unitytyちゃんのオブジェクトを取得
